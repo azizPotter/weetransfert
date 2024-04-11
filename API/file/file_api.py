@@ -44,8 +44,23 @@ def upload_file():
         # File URL in GCS
         file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
         
+
+        if 'from_email' not in request.form or 'to_email' not in request.form:
+            return jsonify({'error': 'Please provide both from_email and to_email fields'}), 400
+        
+        from_email = request.form['from_email']
+        to_email = request.form['to_email']
+
+        # Email verification
+        if not file_service.is_valid_email(from_email):
+            return jsonify({'error': 'Invalid from_email format'}), 400
+
+        if not file_service.is_valid_email(to_email):
+            return jsonify({'error': 'Invalid to_email format'}), 400
+        
+        
         # Adds data to Firestore
-        success, error_message = file_service.upload_csv_data(file_url)
+        success, error_message = file_service.upload_data(file_url, from_email, to_email)
 
         if not success:
             return jsonify({'error': error_message}), 500
