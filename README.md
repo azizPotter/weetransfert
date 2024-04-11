@@ -32,11 +32,16 @@ To run this project, you will need to add the following environment variables to
 
 ```http
   POST /upload
+  GET /userLinkFrom/@from_email
+  GET /userLinkTo/@to_email
+
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `file` | `File` | Send a file to the bucket and store the data in Firestore |
+| `from_email` | `String` | Get the link for the user with the email of the sender |
+| `to_email` | `String` | Get the link for the user with the email of the receiver  |
 
 
 ## Tech Stack
