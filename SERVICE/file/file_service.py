@@ -23,3 +23,35 @@ class FileService:
         except Exception as e:
             error_message = f"Error when adding data to Firestore : {str(e)}"
             return False, error_message
+
+    def getUserLinkFrom(self, fromMail):
+        try:
+            data = []
+            collection_ref = self.firestore_client.collection(self.file_collection_id)
+            docs = collection_ref.where('from_email', '==', fromMail).stream()
+
+            for doc in docs:
+                doc_data = doc.to_dict()
+                if 'file_url' in doc_data:
+                    data.append(doc_data['file_url'])
+        
+            return data
+        except Exception as e:
+            error_message = f"Error when getting data to Firestore : {str(e)}"
+            return False, error_message
+
+    def getUserLinkTo(self, toMail):
+        try:
+            data = []
+            collection_ref = self.firestore_client.collection(self.file_collection_id)
+            docs = collection_ref.where('to_email', '==', toMail).stream()
+
+            for doc in docs:
+                doc_data = doc.to_dict()
+                if 'file_url' in doc_data:
+                    data.append(doc_data['file_url'])
+        
+            return data
+        except Exception as e:
+            error_message = f"Error when getting data to Firestore : {str(e)}"
+            return False, error_message
