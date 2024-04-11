@@ -22,6 +22,8 @@ bucket = storage.Client(os.getenv("PROJECT_ID")).get_bucket(BUCKET_NAME)
 
 file_service = FileService()
 
+
+# POST METHOD
 @file_upload_route.route('/upload', methods=['POST'])
 def upload_file():
     try:
@@ -52,3 +54,19 @@ def upload_file():
 
     except Exception as e:
         return jsonify({'error': f'Error sending file : {str(e)}'}), 500
+
+
+# GET METHOD
+@file_upload_route.route('/getUserLink', methods=['GET'])
+def get_files():
+    try:
+        # Liste les objets dans le dossier spécifié dans le Google Cloud Storage
+        blobs = bucket.list_blobs(prefix=FOLDER)
+
+        # Récupère les URL des fichiers dans le bucket
+        file_urls = [f'https://storage.googleapis.com/{BUCKET_NAME}/{blob.name}' for blob in blobs]
+
+        return jsonify({'files': file_urls}), 200
+
+    except Exception as e:
+        return jsonify({'error': f'Error retrieving files: {str(e)}'}), 500
