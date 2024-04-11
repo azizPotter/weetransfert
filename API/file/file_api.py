@@ -56,17 +56,43 @@ def upload_file():
         return jsonify({'error': f'Error sending file : {str(e)}'}), 500
 
 
-# GET METHOD
-@file_upload_route.route('/getUserLink', methods=['GET'])
+# GET ALL METHOD - PAS SUR DE CETTE METHOD - JE LAISSE LA AU CAS OU
+@file_upload_route.route('/getAllUserLink', methods=['GET'])
 def get_files():
     try:
-        # Liste les objets dans le dossier spécifié dans le Google Cloud Storage
+        #List object in the Cloud Storage Folder
         blobs = bucket.list_blobs(prefix=FOLDER)
 
-        # Récupère les URL des fichiers dans le bucket
+        #Check if there is value
+        if not blobs:
+           return jsonify({'message': 'No files found'}), 200
+
+        # Get files
         file_urls = [f'https://storage.googleapis.com/{BUCKET_NAME}/{blob.name}' for blob in blobs]
 
-        return jsonify({'files': file_urls}), 200
+        #return all files
+        return jsonify({'link': file_urls}), 200
 
     except Exception as e:
         return jsonify({'error': f'Error retrieving files: {str(e)}'}), 500
+
+
+# GET SPECIFIC METHOD
+@file_upload_route.route('/getUserLink/<filename>', methods=['GET'])
+def get_file(filename):
+    try:
+        # Create file path
+        file_path = f"{FOLDER}/{filename}"
+        
+        # Check if file reauested exist
+        if not bucket.blob(file_path).exists():
+            return jsonify({'error': 'File not found'}), 404
+
+        # create file url
+        file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{file_path}'
+
+        #return data
+        return jsonify({'userLink': file_url}), 200
+
+    except Exception as e:
+        return jsonify({'error': f'Error retrieving file: {str(e)}'}), 500
