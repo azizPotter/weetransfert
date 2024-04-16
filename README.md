@@ -60,6 +60,8 @@ Uplaod file data to firestore
 | :-------- | :------- | :------------------------- |
 | `from_email` | `string` | Email address of the sender user |
 
+Get User Link data from firestore based on sender user email
+
 #### Get to_email
 
 ```http
@@ -70,6 +72,8 @@ Uplaod file data to firestore
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `to_email` | `string` | Email address of the receiver user |
+
+Get User Link data from firestore based on receiver user email
 
 ## Tech Stack
 
