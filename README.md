@@ -56,6 +56,10 @@ Uplaod file data to firestore
 
 ```
 
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `from_email` | `string` | Email address of the sender user |
+
 #### Get to_email
 
 ```http
@@ -63,6 +67,9 @@ Uplaod file data to firestore
 
 ```
 
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `to_email` | `string` | Email address of the receiver user |
 
 ## Tech Stack
 
