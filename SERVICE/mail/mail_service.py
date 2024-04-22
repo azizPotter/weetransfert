@@ -11,21 +11,20 @@ class MailService:
         self.app_password =os.getenv("APP_PASSWORD") # Mot de passe d'application généré pour votre compte Gmail
 
     def sendEmail(self,to_email,file_link):
-        print("test service")
-        # Connexion au serveur SMTP de Gmail
+        # Connecting to Gmail SMTP server
         self.server.login(self.sender_email, self.app_password)
          
         message = MIMEMultipart()
         message['From'] = self.sender_email
         message['To'] = to_email
-        message['Subject'] = "gros chibrax"
+        message['Subject'] = "File sharing"
         
-        message.attach(MIMEText("voici " + file_link ,'plain'))
+        message.attach(MIMEText("You can recover your file via this link :\n " + file_link ,'plain'))
         
-           # Envoi du message
+        # Sending the message
         self.server.sendmail(self.sender_email, to_email, message.as_string())
 
     # Déconnexion du serveur SMTP
         self.server.quit()
 
-        print("Email envoyé avec succès !")
+        print("Email sent successfully!")

@@ -66,7 +66,7 @@ def upload_file():
 
         if not success:
             return jsonify({'error': error_message}), 500
-        #envoye du mail
+        #send mail
         mail_service.sendEmail(to_email, file_url)
         return jsonify({'message': 'File sent successfully !', 'file_url': file_url}), 200
 
