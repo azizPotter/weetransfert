@@ -53,4 +53,6 @@ To run this project, you will need to add the following environment variables to
 ## Authors
 
 - [@LeonardBen](https://github.com/LeonardBen)
-
+azerty82000!!!
+bledtransfert@gmail.com
+qqcl rkna jyvz qxcm
