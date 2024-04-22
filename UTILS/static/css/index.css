@@ -1,0 +1,55 @@
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #5d5fef;
+
+}
+
+p{
+    cursor: pointer;
+}
+
+.form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+}
+
+
+h1{
+    color: #fafcfe;
+    margin-bottom: 5vh;
+    font-size: 60px;
+}
+
+a{
+    font-size: 25px;
+    color: #fafcfe;
+    text-decoration: none;
+}
+
+.content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+
+}
+
+.hr-line {
+    width: 72%;
+    border: none;
+    border-top: 4px solid #fafcfe; /* Couleur de la ligne */
+    margin: 0;
+    padding: 0;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}

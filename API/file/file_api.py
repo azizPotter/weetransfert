@@ -5,6 +5,7 @@ from SERVICE.file.file_service import FileService
 
 from UTILS.firestore_utils import get_firestore_client
 
+from SERVICE.mail.mail_service import MailService
 
 import os
 
@@ -22,6 +23,7 @@ bucket = storage.Client(os.getenv("PROJECT_ID")).get_bucket(BUCKET_NAME)
 
 file_service = FileService()
 
+mail_service = MailService()
 
 # POST METHOD
 @file_upload_route.route('/upload', methods=['POST'])
@@ -54,7 +56,8 @@ def upload_file():
 
         if not success:
             return jsonify({'error': error_message}), 500
-
+        #send mail
+        mail_service.sendEmail(to_email, file_url)
         return jsonify({'message': 'File sent successfully !', 'file_url': file_url}), 200
 
     except Exception as e:

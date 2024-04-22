@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylisation du formulaire</title>
+    <link rel="stylesheet" href="/UTILS/static/css/download.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Récuper vos fichiers</h2>
+        <form action="/submit" method="post">
+            <div class="form-group">
+                <label for="email">Mot de passe :</label>
+                <input type="text" placeholder="Entrez votre mot de passe" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Url :</label>
+                <input type="text" placeholder="Entrez votre lien" required>
+            </div>
+            <button type="submit">Télécharger</button>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -85,4 +85,3 @@ Get User Link data from firestore based on receiver user email
 ## Authors
 
 - [@LeonardBen](https://github.com/LeonardBen)
-
