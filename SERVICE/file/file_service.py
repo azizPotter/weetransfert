@@ -2,6 +2,8 @@ from flask import jsonify
 from UTILS.firestore_utils import get_firestore_client
 from google.cloud import firestore, storage
 
+
+
 from SERVICE.crypto.crypto_service import CryptoService
 
 import os
@@ -17,24 +19,22 @@ class FileService:
         self.bucket = storage.Client(os.getenv("PROJECT_ID")).get_bucket(os.getenv("BUCKET_NAME", ""))
         self.crypto_service = CryptoService()
         
-    def upload_data(self, file_url, from_email, to_email, expiration_date, password):
+    def upload_data(self, file_url, to_email, expiration_date, password):
         try:
             # Check the validity of the email
-            if not self.is_valid_email(from_email) or not self.is_valid_email(to_email):
-                return False, "Invalid email address"
+           # if not self.is_valid_email(from_email) or not self.is_valid_email(to_email):
+            #    return False, "Invalid email address"
             
             # Check the validity of the expiration date
             if not self.is_valid_expiration_date(expiration_date):
                 return False, "Invalid expiration date"
         
             #Encrypted data
-            encrypted_from_email = self.crypto_service.hash_data(from_email)
             encrypted_to_email = self.crypto_service.hash_data(to_email)
             encrypted_password = self.crypto_service.hash_data(password)
     
             file_info = {
                 "file_url": file_url, 
-                "from_email": encrypted_from_email, 
                 "to_email": encrypted_to_email,
                 "expiration_date": expiration_date,
                 "password": encrypted_password,
@@ -61,7 +61,7 @@ class FileService:
             current_date = datetime.datetime.now()
             return expiration_date > current_date
         except ValueError:
-            return False
+            return True
         
           
     def getUserLinkFrom(self, fromMail):
@@ -101,3 +101,4 @@ class FileService:
         except Exception as e:
             error_message = f"Error when getting data to Firestore : {str(e)}"
             return False, error_message
+

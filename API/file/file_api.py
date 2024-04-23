@@ -7,6 +7,8 @@ from UTILS.firestore_utils import get_firestore_client
 
 from SERVICE.mail.mail_service import MailService
 
+from datetime import datetime, timedelta
+
 import os
 
 file_upload_route = Blueprint("file_upload_route", __name__)
@@ -46,13 +48,13 @@ def upload_file():
         # File URL in GCS
         file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
         
-        from_email = request.form['from_email']
         to_email = request.form['to_email']
-        expiration_date = request.form['expiration_date']
+        expiration_date = datetime.now() + timedelta(weeks=2)
+        expiration_date_string_version = expiration_date.strftime("%Y-%m-%d")
         password = request.form['password']
 
         # Adds data to Firestore
-        success, error_message = file_service.upload_data(file_url, from_email, to_email, expiration_date, password)
+        success, error_message = file_service.upload_data(file_url, to_email, expiration_date_string_version, password)
 
         if not success:
             return jsonify({'error': error_message}), 500
