@@ -1,4 +1,3 @@
-from flask import jsonify
 from UTILS.firestore_utils import get_firestore_client
 from google.cloud import firestore, storage
 

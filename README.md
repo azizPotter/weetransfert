@@ -25,7 +25,7 @@ To run this project, you will need to add the following environment variables to
 
 `FIRESTORE_DATABASE` : The name of your firestore database
 
-`PRIVATE_KEY_PATH` : The key path of your private key
+`PRIVATE_KEY` : The key for encrypt data
 
 
 
