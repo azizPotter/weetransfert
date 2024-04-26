@@ -24,21 +24,14 @@
         <script>
             window.onload = function () {
                 document.getElementById("downloadForm").addEventListener("submit", function (event) {
-                    event.preventDefault(); // Empêcher l'envoi du formulaire par défaut
+                    event.preventDefault(); 
 
                     var form_data = new FormData();
 
-                    // Récupérer la valeur du paramètre 'url' dans l'URL
                     var crypted_file_path = getParameterByName('file_path');
                     var password = document.getElementsByName("password")[0].value;
                     var to_email = getParameterByName('to');
                     var from_email = getParameterByName('from');
-
-                    console.log("crypted_file_path", 
-                    crypted_file_path, 
-                    "password =",password, 
-                    "from_email =",from_email, 
-                    "to_email", to_email);
 
                     form_data.append('crypted_file_path', crypted_file_path)
                     form_data.append('password', password)
@@ -51,29 +44,26 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            // Vérifier si l'URL est définie
+                            // Check if returned data is an error
                             if (data.error == null) {
-                                console.log("data : ", data);
-                                // Créer un lien cliquable avec l'URL authentifiée
+                              
                                 var linkElement = document.createElement("a");
                                 linkElement.href = data.file_path;
-                                linkElement.textContent = "Cliquez ici pour télécharger le fichier";
+                                linkElement.textContent = "Click here to download file";
 
-                                // Remplacer le lien existant par le nouveau lien
                                 var existingLink = document.getElementById("file_link");
                                 existingLink.parentNode.replaceChild(linkElement, existingLink);
-                             
                             } else {
                                 alert(data.error);
                             }
                         })
                         .catch(error => {
                             console.error('Erreur :', error);
-                            alert("Une erreur s'est produite lors de l'envoi du fichier.");
+                            alert("Error when trying to download file.");
                         });
                 });
 
-                // Fonction pour récupérer les paramètres GET depuis l'URL
+                // Function to get parameter in the url
                 function getParameterByName(name, url) {
                     if (!url) url = window.location.href;
                     name = name.replace(/[\[\]]/g, "\\$&");

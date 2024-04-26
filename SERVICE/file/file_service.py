@@ -62,6 +62,7 @@ class FileService:
             return False
         
     def get_password_by_file_path(self, file_path):
+        #Get the current password in function of the file path
         try:
             data = []
             collection_ref = self.firestore_client.collection(self.file_collection_id)
@@ -78,6 +79,7 @@ class FileService:
             return False, error_message
 
     def update_download_boolean(self, file_path) :
+         #Update downloadable boolean to false 
          try:
             collection_ref = self.firestore_client.collection(self.file_collection_id)
             docs = collection_ref.where('file_url', '==', file_path).stream()
@@ -91,6 +93,7 @@ class FileService:
             return False, error_message
 
     def get_expiration_date(self, file_path) :
+        #Get expiration date
          try:
             data = []
             collection_ref = self.firestore_client.collection(self.file_collection_id)
@@ -107,7 +110,8 @@ class FileService:
             return False, error_message
 
 
-    def is_downloadable(self, file_path) :
+    def get_downloadable(self, file_path) :
+        #Get the value of downloadable in function of file_path
         try:
             data = []
             collection_ref = self.firestore_client.collection(self.file_collection_id)

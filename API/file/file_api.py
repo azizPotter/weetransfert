@@ -21,11 +21,11 @@ firestore_client = get_firestore_client()
 
 bucket = storage.Client(os.getenv("PROJECT_ID")).get_bucket(BUCKET_NAME) 
 
+#Define variable
 file_service = FileService()
-
 mail_service = MailService()
 
-# POST METHOD
+#POST METHOD
 @file_upload_route.route('/upload', methods=['POST'])
 def upload_file():
     try:

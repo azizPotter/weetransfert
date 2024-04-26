@@ -35,20 +35,20 @@
     </div>
     <script>
         document.getElementById("uploadForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire par défaut
-            // Effectuer une requête HTTP POST vers l'URL de traitement
+            event.preventDefault(); 
+           
             fetch('/upload', {
                 method: 'POST',
-                body: new FormData(document.getElementById("uploadForm")) // Envoie les données du formulaire
+                body: new FormData(document.getElementById("uploadForm")) 
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Afficher la réponse du serveur dans la console
-                    alert(data.message); // Afficher une alerte avec le message de réponse du serveur
+                    console.log(data); 
+                    alert(data.message);
                 })
                 .catch(error => {
-                    console.error('Erreur :', error);
-                    alert("Une erreur s'est produite lors de l'envoi du fichier.");
+                    console.error('Error :', error);
+                    alert("Error when trying to upload file");
                 });
         });
     </script>

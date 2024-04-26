@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
 from API.file.file_api import file_upload_route
-from API.file.userLink_api import get_file_path_decrypted
+from API.file.get_file_api import get_file_path_decrypted
 from API.front.front_api import upload_view_route, download_view_route, index_view_route
 
 app = Flask(__name__, static_folder='./UTILS',)
@@ -9,7 +9,7 @@ app = Flask(__name__, static_folder='./UTILS',)
 #Route for upload file
 app.register_blueprint(file_upload_route)
 
-#Route for  file
+#Route for getting file
 app.register_blueprint(get_file_path_decrypted)
 
 #Definition of routes for views
