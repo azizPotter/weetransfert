@@ -11,7 +11,7 @@
     <body>
         <div class="container">
             <h2>Recover your file</h2>
-            <form id="downloadForm" action="submit" method="post">
+            <form id="downloadForm" action="/submit" method="post">
                 <div class="form-group">
                     <label for="password">Password :</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
@@ -30,15 +30,9 @@
 
                     // Récupérer la valeur du paramètre 'url' dans l'URL
                     var crypted_file_path = getParameterByName('file_path');
-                    var password = document.getElementsByName("password");
+                    var password = document.getElementsByName("password")[0].value;
                     var to_email = getParameterByName('to');
                     var from_email = getParameterByName('from');
-
-                    console.log("crypted_file_path", 
-                    crypted_file_path, 
-                    "password =",password, 
-                    "from_email =",from_email, 
-                    "to_email", to_email);
 
                     form_data.append('crypted_file_path', crypted_file_path)
                     form_data.append('password', password)
@@ -52,13 +46,11 @@
                         .then(response => response.json())
                         .then(data => {
                             // Vérifier si l'URL est définie
-                            console.log("RESP : ", response.json());
                             if (data) {
-                                console.log("data : ", data);
-
+                                console.log("data : ", data.file_path);
                                 // Créer un lien cliquable avec l'URL authentifiée
                                 var linkElement = document.createElement("a");
-                                linkElement.href = data;
+                                linkElement.href = data.file_path;
                                 linkElement.textContent = "Cliquez ici pour télécharger le fichier";
 
                                 // Remplacer le lien existant par le nouveau lien

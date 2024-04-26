@@ -26,12 +26,21 @@ crypto_service = CryptoService()
 @get_file_path_decrypted.route('/getFilePath', methods=['POST'])
 def get_files():
     try:
+        print("1")
 
         from_email_crypted = request.form['from_email']
+        print(from_email_crypted)
+
         to_email_crypted = request.form['to_email']
-        crypted_file_path = request.form['crypted_file_path']
+        print(to_email_crypted)
+
+        crypted_file_path = request.form['crypted_file_path'].replace(" ", "+")
+        print(crypted_file_path)
+
 
         file_path = crypto_service.decrypt_url(crypted_file_path, from_email_crypted, to_email_crypted)
+
+        print("5")
 
         password = request.form['password']
         password_crypted = crypto_service.hash_data(password)
@@ -43,7 +52,7 @@ def get_files():
         # blob = bucket.blob(file_path)
         # file_content = blob.download_as_string()
         print("File path : ", file_path)
-        return file_path, 200
+        return jsonify({'file_path': file_path}), 200
 
     except Exception as e:
         return jsonify({'error': f'Error retrieving files: {str(e)}'}), 500
