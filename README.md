@@ -73,7 +73,7 @@ Get download link from storage
 
 **Infrastructure:** Google console, Firestore, GCS Bucket
 
-## Authors
+## Cryptography
 
 ``` load_or_generate_private_key
   return private_key
