@@ -13,10 +13,8 @@ import os
 
 file_upload_route = Blueprint("file_upload_route", __name__)
 
-
 BUCKET_NAME = os.getenv("BUCKET_NAME", "")
 FOLDER = 'file'
-
 
 #  Get client
 firestore_client = get_firestore_client()
@@ -49,12 +47,15 @@ def upload_file():
         file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
         
         to_email = request.form['to_email']
-        expiration_date = datetime.now() + timedelta(weeks=2)
-        expiration_date_string_version = expiration_date.strftime("%Y-%m-%d")
+        expiration_date = request.form['expiration_date']
         password = request.form['password']
 
+         # Verify if the folder is in the request
+        if not file_service.is_valid_expiration_date(expiration_date):
+            return jsonify({'error': 'Please provide a good expiration date'}), 400
+
         # Adds data to Firestore
-        success, error_message = file_service.upload_data(file_url, to_email, expiration_date_string_version, password)
+        success, error_message = file_service.upload_data(file_url, to_email, expiration_date, password)
 
         if not success:
             return jsonify({'error': error_message}), 500

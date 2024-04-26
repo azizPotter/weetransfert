@@ -1,17 +1,16 @@
 from flask import Flask, render_template
 
 from API.file.file_api import file_upload_route
-from API.file.userLink_api import file_userLink_route_from
-from API.file.userLink_api import file_userLink_route_to
+from API.file.userLink_api import get_file_path_decrypted
 from API.front.front_api import upload_view_route, download_view_route, index_view_route
 
 app = Flask(__name__, static_folder='./UTILS',)
 
 #Route for upload file
 app.register_blueprint(file_upload_route)
-#Route for userLink file
-app.register_blueprint(file_userLink_route_from)
-app.register_blueprint(file_userLink_route_to)
+
+#Route for  file
+app.register_blueprint(get_file_path_decrypted)
 
 #Definition of routes for views
 app.register_blueprint(download_view_route)

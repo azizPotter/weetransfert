@@ -2,8 +2,6 @@ from flask import jsonify
 from UTILS.firestore_utils import get_firestore_client
 from google.cloud import firestore, storage
 
-
-
 from SERVICE.crypto.crypto_service import CryptoService
 
 import os
@@ -63,42 +61,35 @@ class FileService:
         except ValueError:
             return True
         
-          
-    def getUserLinkFrom(self, fromMail):
+    def get_password_by_file_path(self, file_path):
         try:
-            #Encrypted data
-            crypted_from_mail = self.crypto_service.hash_data(fromMail)
-            
             data = []
             collection_ref = self.firestore_client.collection(self.file_collection_id)
-            docs = collection_ref.where('from_email', '==', crypted_from_mail).stream()
+            docs = collection_ref.where('file_url', '==', file_path).stream()
 
             for doc in docs:
                 doc_data = doc.to_dict()
-                if 'file_url' in doc_data:
-                    data.append(doc_data['file_url'])
-        
+                if 'password' in doc_data:
+                    data.append(doc_data['password'])
+                   
             return data
         except Exception as e:
             error_message = f"Error when getting data to Firestore : {str(e)}"
             return False, error_message
 
-    def getUserLinkTo(self, toMail):
+    def download(self, file_path):
         try:
-            #Encrypted data
-            crypted_to_mail = self.crypto_service.hash_data(toMail)
-            
-            data = []
-            collection_ref = self.firestore_client.collection(self.file_collection_id)
-            docs = collection_ref.where('to_email', '==', crypted_to_mail).stream()
+            # Télécharger le fichier
+            blob = self.bucket.blob("/file/" + file_path)
+            downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
 
-            for doc in docs:
-                doc_data = doc.to_dict()
-                if 'file_url' in doc_data:
-                    data.append(doc_data['file_url'])
-        
-            return data
+            print(blob)
+            print(downloads_path)
+
+            # Enregistrer le fichier téléchargé dans le répertoire "Téléchargements"
+            downloaded_file_path = os.path.join(downloads_path, 'downloaded_file.txt')
+            blob.download_to_filename(downloaded_file_path)
+            return True
         except Exception as e:
             error_message = f"Error when getting data to Firestore : {str(e)}"
             return False, error_message
-
