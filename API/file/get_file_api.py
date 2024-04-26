@@ -40,10 +40,10 @@ def get_files():
         password_crypted = crypto_service.hash_data(password)
         crypted_password = file_service.get_password_by_file_path(file_path)
         expiration_date = file_service.get_expiration_date(file_path)
-        is_downloadable = file_service.is_downloadable(file_path)
+        is_downloadable = file_service.get_downloadable(file_path)
 
         #Check if the file is downloadable
-        if not get_downloadable[0]:
+        if not is_downloadable[0]:
             return jsonify({'error': 'Expired file, you cannot download it'}), 400
 
         #Check if password is good
