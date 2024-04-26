@@ -27,6 +27,9 @@ To run this project, you will need to add the following environment variables to
 
 `PRIVATE_KEY` : The key for encrypt data
 
+`SENDER_EMAIL` : The sending email address
+
+`APP_PASSWORD` : The application password of the email address
 
 
 ## API Reference
@@ -41,7 +44,6 @@ To run this project, you will need to add the following environment variables to
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `file` | `File` | Send a file to the bucket and store the data in Firestore |
-| `from_email` | `String` | Get the link for the user with the email of the sender |
 | `to_email` | `String` | Get the link for the user with the email of the receiver  |
 | `expiration_date` | `String` | Date expiration of the document |
 | `password` | `String` | Password to access file download  |
@@ -49,39 +51,90 @@ To run this project, you will need to add the following environment variables to
 Uplaod file data to firestore
 
 
-#### Get from_email
+#### Get file_path
 
 ```http
-  GET /userLinkFrom/@from_email
+  POST /getFilePath/
 
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `from_email` | `string` | Email address of the sender user |
+| `crypted_file_path` | `string` | crypted file path  |
+| `password` | `string` | Password for access file |
+| `to_email` | `string` | Destination Email |
+| `from_email` | `string` | Sender Email |
 
-Get User Link data from firestore based on sender user email
-
-#### Get to_email
-
-```http
-  GET /userLinkTo/@to_email
-
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `to_email` | `string` | Email address of the receiver user |
-
-Get User Link data from firestore based on receiver user email
+Get download link from storage
 
 ## Tech Stack
 
-**Server:** Python, Flask, cryptography
+**Server:** Python, Flask, cryptography, smtplib
 
 **Infrastructure:** Google console, Firestore, GCS Bucket
 
-
 ## Authors
 
+``` load_or_generate_private_key
+  return private_key
+
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+
+Generate a key if it does not exist for encrypted data
+
+``` hash_data
+  return hashed_data
+
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `data` | `*` | data to be encrypted  |
+
+Encrypt data
+
+``` generate_key
+  return key
+
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `from_email` | `string` | Sender Email |
+| `to_email` | `string` | Destination Email |
+
+Generate key in function of parameters
+
+``` encrypt_url
+  return encrypted_url
+
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `from_email` | `string` | Sender Email |
+| `to_email` | `string` | Destination Email |
+| `file_path` | `string` | file path |
+
+Generate encrypted url in function of key generated
+
+``` decrypt_url
+  return decrypted_url
+
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `from_email` | `string` | Sender Email |
+| `to_email` | `string` | Destination Email |
+| `file_path_crypted` | `string` | encrypt file path |
+
+Generate decrypted url in function of key
+
+## Authors
 - [@LeonardBen](https://github.com/LeonardBen)
+- [@azizPotter](https://github.com/azizPotter)
+- [@NicolasDS](https://github.com/SynhPoO)
