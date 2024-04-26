@@ -19,8 +19,8 @@ class FileService:
     def upload_data(self, file_url, to_email, expiration_date, password):
         try:
             # Check the validity of the email
-           # if not self.is_valid_email(from_email) or not self.is_valid_email(to_email):
-            #    return False, "Invalid email address"
+            if not self.is_valid_email(to_email):
+               return False, "Invalid email address"
             
             # Check the validity of the expiration date
             if not self.is_valid_expiration_date(expiration_date):

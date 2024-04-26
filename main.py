@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 
 from API.file.file_api import file_upload_route
 from API.file.get_file_api import get_file_path_decrypted

@@ -2,9 +2,7 @@ from flask import request, jsonify, Blueprint
 from google.cloud import storage
 
 from SERVICE.file.file_service import FileService
-
 from SERVICE.crypto.crypto_service import CryptoService
-
 from UTILS.firestore_utils import get_firestore_client
 
 import os

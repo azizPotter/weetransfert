@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint
+from flask import render_template, Blueprint
 
 upload_view_route = Blueprint("upload_view_route", __name__)
 download_view_route = Blueprint("download_view_route", __name__)

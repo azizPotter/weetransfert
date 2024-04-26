@@ -2,12 +2,8 @@ from flask import request, jsonify, Blueprint
 from google.cloud import storage
 
 from SERVICE.file.file_service import FileService
-
 from UTILS.firestore_utils import get_firestore_client
-
 from SERVICE.mail.mail_service import MailService
-
-from datetime import datetime, timedelta
 
 import os
 

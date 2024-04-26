@@ -11,7 +11,7 @@ class MailService:
     def __init__(self):
         self.server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         self.sender_email = os.getenv("SENDER_EMAIL")
-        self.app_password =os.getenv("APP_PASSWORD") # Mot de passe d'application généré pour votre compte Gmail
+        self.app_password =os.getenv("APP_PASSWORD") # App password generate for Gmail account
 
     def sendEmail(self,to_email,file_link):
         # Connecting to Gmail SMTP server
@@ -32,7 +32,7 @@ class MailService:
         # Sending the message
         self.server.sendmail(self.sender_email, to_email, message.as_string())
 
-    # Déconnexion du serveur SMTP
+        # SMTP server logout
         self.server.quit()
 
         print("Email sent successfully!")
