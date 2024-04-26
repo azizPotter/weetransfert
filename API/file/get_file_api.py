@@ -55,6 +55,7 @@ def get_files():
             file_service.update_download_boolean(file_path)
             return jsonify({'error': 'Expired file, you cannot download it'}), 400
 
+        file_service.update_download_boolean(file_path)
         return jsonify({'file_path': file_path}), 200
 
     except Exception as e:
