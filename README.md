@@ -75,14 +75,15 @@ Get download link from storage
 
 ## Cryptography
 
-```load_or_generate_private_key
-
+#### load_or_generate_private_key
+```
   return private_key
 ```
+
 Generate a key if it does not exist for encrypted data
 
-```hash_data
-
+#### hash_data
+```
   return hashed_data
 ```
 
@@ -92,8 +93,8 @@ Generate a key if it does not exist for encrypted data
 
 Encrypt data
 
-```generate_key
-
+#### generate_key
+```
   return key
 ```
 
@@ -104,8 +105,8 @@ Encrypt data
 
 Generate key in function of parameters
 
-```encrypt_url
-
+#### encrypt_url
+```
   return encrypted_url
 ```
 
@@ -117,8 +118,8 @@ Generate key in function of parameters
 
 Generate encrypted url in function of key generated
 
-```decrypt_url
-
+#### decrypt_url
+```
   return decrypted_url
 ```
 
