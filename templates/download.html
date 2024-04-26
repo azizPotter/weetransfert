@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download</title>
     <link rel="stylesheet" href="/UTILS/static/css/download.css">
-    <!-- Insérez ces scripts avant tout autre script -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
 </head>
 
     <body>
         <div class="container">
             <h2>Recover your file</h2>
-            <form id="downloadForm" action="/submit" method="post">
+            <form id="downloadForm" action="submit" method="post">
                 <div class="form-group">
                     <label for="password">Password :</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
@@ -37,6 +34,12 @@
                     var to_email = getParameterByName('to');
                     var from_email = getParameterByName('from');
 
+                    console.log("crypted_file_path", 
+                    crypted_file_path, 
+                    "password =",password, 
+                    "from_email =",from_email, 
+                    "to_email", to_email);
+
                     form_data.append('crypted_file_path', crypted_file_path)
                     form_data.append('password', password)
                     form_data.append('to_email', to_email)
@@ -49,13 +52,13 @@
                         .then(response => response.json())
                         .then(data => {
                             // Vérifier si l'URL est définie
+                            console.log("RESP : ", response.json());
                             if (data) {
-                                console.log(data);
-                                var file_path = data.decrypted_file_path;
+                                console.log("data : ", data);
 
                                 // Créer un lien cliquable avec l'URL authentifiée
                                 var linkElement = document.createElement("a");
-                                linkElement.href = file_path;
+                                linkElement.href = data;
                                 linkElement.textContent = "Cliquez ici pour télécharger le fichier";
 
                                 // Remplacer le lien existant par le nouveau lien

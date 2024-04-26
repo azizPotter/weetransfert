@@ -44,7 +44,7 @@ def upload_file():
         file_bucket.upload_from_file(file)
 
         # File URL in GCS
-        file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
+        file_url = f'https://storage.cloud.google.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
         
         to_email = request.form['to_email']
         expiration_date = request.form['expiration_date']

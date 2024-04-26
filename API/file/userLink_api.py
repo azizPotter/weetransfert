@@ -29,36 +29,21 @@ def get_files():
 
         from_email_crypted = request.form['from_email']
         to_email_crypted = request.form['to_email']
-
         crypted_file_path = request.form['crypted_file_path']
 
         file_path = crypto_service.decrypt_url(crypted_file_path, from_email_crypted, to_email_crypted)
-        downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
-        os.chmod(downloads_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
 
         password = request.form['password']
         password_crypted = crypto_service.hash_data(password)
         crypted_password = file_service.get_password_by_file_path(file_path)
-
-        if password_crypted == crypted_password[0] : 
+        print("crypted_file_path path : ", crypted_file_path)
+        if password_crypted != crypted_password[0] : 
             return jsonify({'error': 'Wrong password'}), 400
 
-     
-        # Utilisez l'API REST de Firebase Storage pour obtenir un lien de téléchargement direct
-      #  response = requests.get(file_path + "?alt=media")
-
-        # Renvoyer l'URL de téléchargement direct si la demande est réussie
-        #if response.status_code == 200:
-          #  download_url = response.url
-           # return jsonify({'download_link': download_url}), 200
-       # else:
-            #return jsonify({'error': 'Failed to generate download link'}), response.status_code
-  
-        blob = bucket.blob(file_path)
-        blob.download_to_filename(downloads_path)
-
-        data = file_path
-        return jsonify({'decrypted_file_path': data}), 200
+        # blob = bucket.blob(file_path)
+        # file_content = blob.download_as_string()
+        print("File path : ", file_path)
+        return file_path, 200
 
     except Exception as e:
         return jsonify({'error': f'Error retrieving files: {str(e)}'}), 500
