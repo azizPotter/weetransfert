@@ -4,47 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stylisation du formulaire</title>
+    <title>Upload</title>
     <link rel="stylesheet" href="/UTILS/static/css/upload.css">
 </head>
 
 <body>
     <div class="container">
-        <h2>Envoyer vos fichiers</h2>
+        <h2>Send your file</h2>
         <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
             <div class="form-group">
-                <label for="from_email">Adresse mail de l'expéditeur :</label>
-                <input type="email" id="from_email" name="from_email"
-                    placeholder="Entrez l'adresse email de l'expéditeur" required>
+                <label for="password">Password :</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Entrez le mot de passe" required>
             </div>
             <div class="form-group">
-                <label for="to_email">Adresse mail du destinataire :</label>
-                <input type="email" id="to_email" name="to_email" placeholder="Entrez l'adresse email du destinataire"
-                    required>
+                <label for="to_email">Destination mail address :</label>
+                <input type="email" id="to_email" name="to_email"
+                       placeholder="enter the destination mail address" required>
             </div>
             <div class="form-group">
-                <label for="file">Fichier :</label>
+                <label for="expiration_date">Expiration Date :</label>
+                <input type="date" id="expiration_date" name="expiration_date" required>
+            </div>
+            <div class="form-group">
+                <label for="file">File :</label>
                 <input type="file" id="file" name="file" required>
             </div>
-            <button type="submit">Publier</button>
+            <button type="submit">Publish</button>
         </form>
     </div>
     <script>
         document.getElementById("uploadForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire par défaut
-            // Effectuer une requête HTTP POST vers l'URL de traitement
+            event.preventDefault(); 
+           
             fetch('/upload', {
                 method: 'POST',
-                body: new FormData(document.getElementById("uploadForm")) // Envoie les données du formulaire
+                body: new FormData(document.getElementById("uploadForm")) 
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Afficher la réponse du serveur dans la console
-                    alert(data.message); // Afficher une alerte avec le message de réponse du serveur
+                    console.log(data); 
+                    alert(data.message);
                 })
                 .catch(error => {
-                    console.error('Erreur :', error);
-                    alert("Une erreur s'est produite lors de l'envoi du fichier.");
+                    console.error('Error :', error);
+                    alert("Error when trying to upload file");
                 });
         });
     </script>

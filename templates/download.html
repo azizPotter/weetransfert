@@ -4,25 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stylisation du formulaire</title>
+    <title>Download</title>
     <link rel="stylesheet" href="/UTILS/static/css/download.css">
 </head>
 
-<body>
-    <div class="container">
-        <h2>Récuper vos fichiers</h2>
-        <form action="/submit" method="post">
-            <div class="form-group">
-                <label for="email">Mot de passe :</label>
-                <input type="text" placeholder="Entrez votre mot de passe" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Url :</label>
-                <input type="text" placeholder="Entrez votre lien" required>
-            </div>
-            <button type="submit">Télécharger</button>
-        </form>
-    </div>
-</body>
+    <body>
+        <div class="container">
+            <h2>Recover your file</h2>
+            <form id="downloadForm" action="/submit" method="post">
+                <div class="form-group">
+                    <label for="password">Password :</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Verify</button>
+                <br />
+                <a id="file_link" href="#"></a>
+            </form>
+        </div>
+        <script>
+            window.onload = function () {
+                document.getElementById("downloadForm").addEventListener("submit", function (event) {
+                    event.preventDefault(); 
 
+                    var form_data = new FormData();
+
+                    var crypted_file_path = getParameterByName('file_path');
+                    var password = document.getElementsByName("password")[0].value;
+                    var to_email = getParameterByName('to');
+                    var from_email = getParameterByName('from');
+
+                    form_data.append('crypted_file_path', crypted_file_path)
+                    form_data.append('password', password)
+                    form_data.append('to_email', to_email)
+                    form_data.append('from_email', from_email)
+
+                    fetch('/getFilePath', {
+                        method: 'POST',
+                        body: form_data // Envoie les données du formulaire
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check if returned data is an error
+                            if (data.error == null) {
+                              
+                                var linkElement = document.createElement("a");
+                                linkElement.href = data.file_path;
+                                linkElement.textContent = "Click here to download file";
+
+                                var existingLink = document.getElementById("file_link");
+                                existingLink.parentNode.replaceChild(linkElement, existingLink);
+                            } else {
+                                alert(data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erreur :', error);
+                            alert("Error when trying to download file.");
+                        });
+                });
+
+                // Function to get parameter in the url
+                function getParameterByName(name, url) {
+                    if (!url) url = window.location.href;
+                    name = name.replace(/[\[\]]/g, "\\$&");
+                    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+            };
+        </script>
+    </body>
 </html>

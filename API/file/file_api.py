@@ -7,25 +7,25 @@ from UTILS.firestore_utils import get_firestore_client
 
 from SERVICE.mail.mail_service import MailService
 
+from datetime import datetime, timedelta
+
 import os
 
 file_upload_route = Blueprint("file_upload_route", __name__)
 
-
 BUCKET_NAME = os.getenv("BUCKET_NAME", "")
 FOLDER = 'file'
-
 
 #  Get client
 firestore_client = get_firestore_client()
 
 bucket = storage.Client(os.getenv("PROJECT_ID")).get_bucket(BUCKET_NAME) 
 
+#Define variable
 file_service = FileService()
-
 mail_service = MailService()
 
-# POST METHOD
+#POST METHOD
 @file_upload_route.route('/upload', methods=['POST'])
 def upload_file():
     try:
@@ -44,15 +44,18 @@ def upload_file():
         file_bucket.upload_from_file(file)
 
         # File URL in GCS
-        file_url = f'https://storage.googleapis.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
+        file_url = f'https://storage.cloud.google.com/{BUCKET_NAME}/{FOLDER}/{file.filename}'
         
-        from_email = request.form['from_email']
         to_email = request.form['to_email']
         expiration_date = request.form['expiration_date']
         password = request.form['password']
 
+         # Verify if the folder is in the request
+        if not file_service.is_valid_expiration_date(expiration_date):
+            return jsonify({'error': 'Please provide a good expiration date'}), 400
+
         # Adds data to Firestore
-        success, error_message = file_service.upload_data(file_url, from_email, to_email, expiration_date, password)
+        success, error_message = file_service.upload_data(file_url, to_email, expiration_date, password)
 
         if not success:
             return jsonify({'error': error_message}), 500
