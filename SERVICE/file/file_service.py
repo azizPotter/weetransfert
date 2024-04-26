@@ -55,11 +55,11 @@ class FileService:
     def is_valid_expiration_date(self, expiration_date):
         # Check that date is in the future and have valid format
         try:
-            expiration_date = datetime.datetime.strptime(expiration_date, '%d-%m-%Y')
+            expiration_date = datetime.datetime.strptime(expiration_date, '%Y-%m-%d')
             current_date = datetime.datetime.now()
             return expiration_date > current_date
         except ValueError:
-            return True
+            return False
         
     def get_password_by_file_path(self, file_path):
         try:
@@ -77,19 +77,48 @@ class FileService:
             error_message = f"Error when getting data to Firestore : {str(e)}"
             return False, error_message
 
-    def download(self, file_path):
-        try:
-            # Télécharger le fichier
-            blob = self.bucket.blob("/file/" + file_path)
-            downloads_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+    def update_download_boolean(self, file_path) :
+         try:
+            collection_ref = self.firestore_client.collection(self.file_collection_id)
+            docs = collection_ref.where('file_url', '==', file_path).stream()
 
-            print(blob)
-            print(downloads_path)
-
-            # Enregistrer le fichier téléchargé dans le répertoire "Téléchargements"
-            downloaded_file_path = os.path.join(downloads_path, 'downloaded_file.txt')
-            blob.download_to_filename(downloaded_file_path)
+            for doc in docs:
+                doc.reference.update({"downloadable": False})
+                   
             return True
+         except Exception as e:
+            error_message = f"Error when updating data to Firestore : {str(e)}"
+            return False, error_message
+
+    def get_expiration_date(self, file_path) :
+         try:
+            data = []
+            collection_ref = self.firestore_client.collection(self.file_collection_id)
+            docs = collection_ref.where('file_url', '==', file_path).stream()
+
+            for doc in docs:
+                doc_data = doc.to_dict()
+                if 'expiration_date' in doc_data:
+                    data.append(doc_data['expiration_date'])
+                   
+            return data
+         except Exception as e:
+            error_message = f"Error when getting data to Firestore : {str(e)}"
+            return False, error_message
+
+
+    def is_downloadable(self, file_path) :
+        try:
+            data = []
+            collection_ref = self.firestore_client.collection(self.file_collection_id)
+            docs = collection_ref.where('file_url', '==', file_path).stream()
+
+            for doc in docs:
+                doc_data = doc.to_dict()
+                if 'downloadable' in doc_data:
+                    data.append(doc_data['downloadable'])
+                   
+            return data
         except Exception as e:
             error_message = f"Error when getting data to Firestore : {str(e)}"
             return False, error_message
